@@ -7,6 +7,18 @@
     <!-- viewport-fit=cover: installed on a phone, the app runs edge to edge and keeps clear of the notch. -->
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover" />
     <title>ORAL</title>
+
+    <!-- A deep link on a static host without its own fallback (GitHub Pages) comes back through the
+         site's 404 page as ?__route=/path; the address is put back before the app starts. -->
+    <script>
+      (function (l) {
+        try {
+          var m = /[?&]__route=([^&#]*)/.exec(l.search);
+          var route = m && decodeURIComponent(m[1]);
+          if (route && route.charAt(0) === '/' && route.charAt(1) !== '/') history.replaceState(null, '', route);
+        } catch (e) {}
+      })(location);
+    </script>
     <meta name="description" content="Vos communautés d’apprentissage : séries, lives, coaching et échanges avec votre communauté." />
 
     <!-- Web app (PWA): installable from the browser, opens full screen like an app. -->
@@ -17,7 +29,7 @@
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-title" content="ORAL" />
+    <meta name="apple-mobile-web-app-title" content="ORAL Démo" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
     <!-- The `react-native-web` recommended style reset: https://necolas.github.io/react-native-web/docs/setup/#root-element -->
@@ -54,6 +66,6 @@
     </noscript>
     <!-- The root element for your Expo app. -->
     <div id="root"></div>
-  <script src="/_expo/static/js/web/entry-e2faa0e0d7e5116263ce723167b56a32.js" defer></script>
+  <script src="/_expo/static/js/web/entry-dfdb0e34d9057aa45c021c61dcba8446.js" defer></script>
 </body>
 </html>

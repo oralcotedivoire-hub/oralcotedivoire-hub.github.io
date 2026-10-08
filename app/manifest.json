@@ -1,12 +1,12 @@
 {
-  "id": "/",
-  "name": "ORAL Démo",
-  "short_name": "ORAL Démo",
+  "id": "/app/",
+  "name": "ORAL",
+  "short_name": "ORAL",
   "description": "Vos communautés d’apprentissage : séries, lives, coaching et échanges avec votre communauté.",
   "lang": "fr",
   "dir": "ltr",
-  "start_url": "/",
-  "scope": "/",
+  "start_url": "/app/",
+  "scope": "/app/",
   "display": "standalone",
   "orientation": "any",
   "background_color": "#050a27",
@@ -17,25 +17,25 @@
   ],
   "icons": [
     {
-      "src": "/icons/icon-192.png",
+      "src": "/app/icons/icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/icons/icon-512.png",
+      "src": "/app/icons/icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/icons/icon-maskable-192.png",
+      "src": "/app/icons/icon-maskable-192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "maskable"
     },
     {
-      "src": "/icons/icon-maskable-512.png",
+      "src": "/app/icons/icon-maskable-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
