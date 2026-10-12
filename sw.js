@@ -1,7 +1,8 @@
-// Made by scripts/make-sw.mjs — do not edit. Version 9ef8807dd8b0.
-const SHELL = 'oral-shell-9ef8807dd8b0';
+// Made by scripts/make-sw.mjs — do not edit. Version 91d0371c01d4.
+const SHELL = 'oral-shell-91d0371c01d4';
 const IMAGES = 'oral-images';
-const FILES = ["/","/_expo/static/js/web/entry-9e8ee18fa7dc6b846eb7e698503776ed.js","/apple-touch-icon.png","/assets/node_modules/@expo-google-fonts/inter/400Regular/Inter_400Regular.51b6ad87261f18b6433ec52871ddfabc.ttf","/assets/node_modules/@expo-google-fonts/inter/500Medium/Inter_500Medium.137ab18bace28dd0bd83eb3b8ed2bc54.ttf","/assets/node_modules/@expo-google-fonts/inter/600SemiBold/Inter_600SemiBold.a5f35888d2da465de352e0dcfaf33324.ttf","/assets/node_modules/@expo-google-fonts/inter/700Bold/Inter_700Bold.6e237de4f1f413afa2fcc45c77ac343a.ttf","/assets/node_modules/@expo/vector-icons/build/vendor/react-native-vector-icons/Fonts/Ionicons.b4eb097d35f44ed943676fd56f6bdc51.ttf","/assets/node_modules/@expo/vector-icons/build/vendor/react-native-vector-icons/Fonts/MaterialCommunityIcons.6e435534bd35da5fef04168860a9b8fa.ttf","/favicon.ico","/icons/icon-192.png","/icons/icon-512.png","/icons/icon-maskable-192.png","/icons/icon-maskable-512.png","/manifest.json","/metadata.json"];
+const READER = 'oral-reader';
+const FILES = ["/","/_expo/static/js/web/__common-78f5a20d79c846f3b07d2b2ad63259ff.js","/_expo/static/js/web/__expo-metro-runtime-e61693ae33497368646febbbae1b21fe.js","/_expo/static/js/web/entry-34c7e770d5bd743612cf4b4ea668d858.js","/apple-touch-icon.png","/assets/node_modules/@expo-google-fonts/inter/400Regular/Inter_400Regular.51b6ad87261f18b6433ec52871ddfabc.ttf","/assets/node_modules/@expo-google-fonts/inter/500Medium/Inter_500Medium.137ab18bace28dd0bd83eb3b8ed2bc54.ttf","/assets/node_modules/@expo-google-fonts/inter/600SemiBold/Inter_600SemiBold.a5f35888d2da465de352e0dcfaf33324.ttf","/assets/node_modules/@expo-google-fonts/inter/700Bold/Inter_700Bold.6e237de4f1f413afa2fcc45c77ac343a.ttf","/assets/node_modules/@expo/vector-icons/build/vendor/react-native-vector-icons/Fonts/Ionicons.b4eb097d35f44ed943676fd56f6bdc51.ttf","/assets/node_modules/@expo/vector-icons/build/vendor/react-native-vector-icons/Fonts/MaterialCommunityIcons.6e435534bd35da5fef04168860a9b8fa.ttf","/favicon.ico","/icons/icon-192.png","/icons/icon-512.png","/icons/icon-maskable-192.png","/icons/icon-maskable-512.png","/manifest.json","/metadata.json"];
 const LEAVE = ["/app/"];
 
 self.addEventListener('install', (event) => {
@@ -47,6 +48,19 @@ self.addEventListener('fetch', (event) => {
           if (hit) return hit;
           const response = await fetch(request);
           if (response.ok) cache.put(request, response.clone()).then(() => trim(cache, 300));
+          return response;
+        }),
+      );
+      return;
+    }
+    // The reader's engine: its names change with its content, so a kept copy is always right.
+    if (/\/_expo\/static\/js\/web\/pdf-[0-9a-f]+\.js$/.test(url.pathname)) {
+      event.respondWith(
+        caches.open(READER).then(async (cache) => {
+          const hit = await cache.match(request);
+          if (hit) return hit;
+          const response = await fetch(request);
+          if (response.ok) cache.put(request, response.clone()).then(() => trim(cache, 4));
           return response;
         }),
       );
