@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <script>if (window.top !== window.self) window.top.location.href = window.self.location.href;</script>
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'wasm-unsafe-eval' 'sha256-Be8/w/LkoS86SWdZjoCXG7k84EDPylbal9FVgfFwxaY=' 'sha256-HiocMLHEp88jnAL/662CRKRHmamvT6L9d2SK0ldzyyI='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https://*.supabase.co; media-src 'self' blob: https://*.supabase.co; connect-src 'self' blob: data: https://*.supabase.co wss://*.supabase.co; worker-src 'self' blob:; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
+    <!-- viewport-fit=cover: installed on a phone, the app runs edge to edge and keeps clear of the notch. -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover" />
+    <title>Voix et posture | ORAL</title>
+
+    <!-- A deep link on a static host without its own fallback (GitHub Pages) comes back through the
+         site's 404 page as ?__route=/path; the address is put back before the app starts. -->
+    <script>
+      (function (l) {
+        try {
+          var m = /[?&]__route=([^&#]*)/.exec(l.search);
+          var route = m && decodeURIComponent(m[1]);
+          if (route && route.charAt(0) === '/' && route.charAt(1) !== '/') history.replaceState(null, '', route);
+        } catch (e) {}
+      })(location);
+    </script>
+    <meta name="description" content="Occuper l’espace. Une série de 3 épisodes avec Inès Diabaté." />
+
+    <!-- Web app (PWA): installable from the browser, opens full screen like an app. -->
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#050a27" />
+    <meta name="application-name" content="ORAL" />
+    <!-- iPhone and iPad: « Sur l’écran d’accueil » from Safari. -->
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="ORAL Démo" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <!-- The `react-native-web` recommended style reset: https://necolas.github.io/react-native-web/docs/setup/#root-element -->
+    <style id="expo-reset">
+      /* These styles make the body full-height */
+      html,
+      body {
+        height: 100%;
+      }
+      /* These styles disable body scrolling if you are using <ScrollView> */
+      body {
+        overflow: hidden;
+        /* ORAL night blue until the app draws: launch never flashes white. */
+        background-color: #050a27;
+      }
+      /* Fields fit their row on narrow screens (an input's default width is about 20 characters). */
+      input,
+      textarea {
+        min-width: 0;
+      }
+      /* These styles make the root element full-height */
+      #root {
+        display: flex;
+        height: 100%;
+        flex: 1;
+      }
+    </style>
+  <meta name="theme-color" content="#050a27">
+<link rel="icon" href="/favicon.ico"/>    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="ORAL" />
+    <meta property="og:locale" content="fr_FR" />
+    <meta property="og:title" content="Voix et posture" />
+    <meta property="og:description" content="Occuper l’espace. Une série de 3 épisodes avec Inès Diabaté." />
+    <meta property="og:url" content="https://oralcotedivoire-hub.github.io/serie/voix-et-posture" />
+    <meta property="og:image" content="https://oralcotedivoire-hub.github.io/og/serie-voix-et-posture.jpg" />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+  </head>
+
+  <body>
+    <noscript>
+      Activez JavaScript pour utiliser ORAL.
+    </noscript>
+    <!-- The root element for your Expo app. -->
+    <div id="root"></div>
+  <script src="/_expo/static/js/web/__expo-metro-runtime-e61693ae33497368646febbbae1b21fe.js" defer></script><script src="/_expo/static/js/web/__common-04dad3aad4e7073e661188822a606fb6.js" defer></script><script src="/_expo/static/js/web/entry-6551846507a4e1473b557ff6431bef28.js" defer></script>
+</body>
+</html>
