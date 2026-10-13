@@ -1,8 +1,8 @@
-// Made by scripts/make-sw.mjs — do not edit. Version d67c7f1432a8.
-const SHELL = 'oral-shell-d67c7f1432a8';
+// Made by scripts/make-sw.mjs — do not edit. Version ebaf41179b15.
+const SHELL = 'oral-shell-ebaf41179b15';
 const IMAGES = 'oral-images';
 const READER = 'oral-reader';
-const FILES = ["/","/_expo/static/js/web/__common-04dad3aad4e7073e661188822a606fb6.js","/_expo/static/js/web/__expo-metro-runtime-e61693ae33497368646febbbae1b21fe.js","/_expo/static/js/web/entry-6551846507a4e1473b557ff6431bef28.js","/apple-touch-icon.png","/assets/node_modules/@expo-google-fonts/inter/400Regular/Inter_400Regular.51b6ad87261f18b6433ec52871ddfabc.ttf","/assets/node_modules/@expo-google-fonts/inter/500Medium/Inter_500Medium.137ab18bace28dd0bd83eb3b8ed2bc54.ttf","/assets/node_modules/@expo-google-fonts/inter/600SemiBold/Inter_600SemiBold.a5f35888d2da465de352e0dcfaf33324.ttf","/assets/node_modules/@expo-google-fonts/inter/700Bold/Inter_700Bold.6e237de4f1f413afa2fcc45c77ac343a.ttf","/assets/node_modules/@expo/vector-icons/build/vendor/react-native-vector-icons/Fonts/Ionicons.b4eb097d35f44ed943676fd56f6bdc51.ttf","/assets/node_modules/@expo/vector-icons/build/vendor/react-native-vector-icons/Fonts/MaterialCommunityIcons.6e435534bd35da5fef04168860a9b8fa.ttf","/favicon.ico","/icons/icon-192.png","/icons/icon-512.png","/icons/icon-maskable-192.png","/icons/icon-maskable-512.png","/manifest.json","/metadata.json"];
+const FILES = ["/","/_expo/static/js/web/__common-9d9ba813b974dc6efe5d1f0587c7486b.js","/_expo/static/js/web/__expo-metro-runtime-e61693ae33497368646febbbae1b21fe.js","/_expo/static/js/web/entry-ddb29fddebbd024717a8fae83656e98a.js","/apple-touch-icon.png","/assets/node_modules/@expo-google-fonts/inter/400Regular/Inter_400Regular.51b6ad87261f18b6433ec52871ddfabc.ttf","/assets/node_modules/@expo-google-fonts/inter/500Medium/Inter_500Medium.137ab18bace28dd0bd83eb3b8ed2bc54.ttf","/assets/node_modules/@expo-google-fonts/inter/600SemiBold/Inter_600SemiBold.a5f35888d2da465de352e0dcfaf33324.ttf","/assets/node_modules/@expo-google-fonts/inter/700Bold/Inter_700Bold.6e237de4f1f413afa2fcc45c77ac343a.ttf","/assets/node_modules/@expo/vector-icons/build/vendor/react-native-vector-icons/Fonts/Ionicons.b4eb097d35f44ed943676fd56f6bdc51.ttf","/assets/node_modules/@expo/vector-icons/build/vendor/react-native-vector-icons/Fonts/MaterialCommunityIcons.6e435534bd35da5fef04168860a9b8fa.ttf","/favicon.ico","/icons/icon-192.png","/icons/icon-512.png","/icons/icon-maskable-192.png","/icons/icon-maskable-512.png","/manifest.json","/metadata.json"];
 const LEAVE = ["/app/"];
 
 self.addEventListener('install', (event) => {
@@ -83,4 +83,37 @@ self.addEventListener('fetch', (event) => {
       }),
     );
   }
+});
+
+// Push notifications (supabase/functions/push-send): shown even with the app closed; a tap opens
+// the screen they are about, in the open app if there is one.
+self.addEventListener('push', (event) => {
+  let data = {};
+  try {
+    data = event.data ? event.data.json() : {};
+  } catch (e) {
+    data = { body: event.data ? event.data.text() : '' };
+  }
+  event.waitUntil(
+    self.registration.showNotification(data.title || 'ORAL', {
+      body: data.body || '',
+      icon: '/icons/icon-192.png',
+      tag: data.id || data.tag || 'oral',
+      lang: 'fr',
+      data: { link: data.link || '/' },
+    }),
+  );
+});
+
+self.addEventListener('notificationclick', (event) => {
+  event.notification.close();
+  const link = (event.notification.data && event.notification.data.link) || '/';
+  const url = new URL('' + (link.startsWith('/') ? link : '/' + link), self.location.origin).href;
+  event.waitUntil(
+    self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then((windows) => {
+      const open = windows.find((w) => w.url.startsWith(self.location.origin + '/') && !LEAVE.some((path) => new URL(w.url).pathname.startsWith(path)));
+      if (open) return open.focus().then((w) => (w && 'navigate' in w ? w.navigate(url) : w));
+      return self.clients.openWindow(url);
+    }),
+  );
 });

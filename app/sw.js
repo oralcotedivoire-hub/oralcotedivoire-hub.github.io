@@ -1,8 +1,8 @@
-// Made by scripts/make-sw.mjs — do not edit. Version fda2a64ccad7.
-const SHELL = 'oral-shell-fda2a64ccad7';
+// Made by scripts/make-sw.mjs — do not edit. Version 51580fc93821.
+const SHELL = 'oral-shell-51580fc93821';
 const IMAGES = 'oral-images';
 const READER = 'oral-reader';
-const FILES = ["/app/","/app/_expo/static/js/web/__common-04dad3aad4e7073e661188822a606fb6.js","/app/_expo/static/js/web/__expo-metro-runtime-e61693ae33497368646febbbae1b21fe.js","/app/_expo/static/js/web/entry-dde9bbdd4bb11c7cc9aef7fb4490767f.js","/app/apple-touch-icon.png","/app/assets/node_modules/@expo-google-fonts/inter/400Regular/Inter_400Regular.51b6ad87261f18b6433ec52871ddfabc.ttf","/app/assets/node_modules/@expo-google-fonts/inter/500Medium/Inter_500Medium.137ab18bace28dd0bd83eb3b8ed2bc54.ttf","/app/assets/node_modules/@expo-google-fonts/inter/600SemiBold/Inter_600SemiBold.a5f35888d2da465de352e0dcfaf33324.ttf","/app/assets/node_modules/@expo-google-fonts/inter/700Bold/Inter_700Bold.6e237de4f1f413afa2fcc45c77ac343a.ttf","/app/assets/node_modules/@expo/vector-icons/build/vendor/react-native-vector-icons/Fonts/Ionicons.b4eb097d35f44ed943676fd56f6bdc51.ttf","/app/assets/node_modules/@expo/vector-icons/build/vendor/react-native-vector-icons/Fonts/MaterialCommunityIcons.6e435534bd35da5fef04168860a9b8fa.ttf","/app/favicon.ico","/app/icons/icon-192.png","/app/icons/icon-512.png","/app/icons/icon-maskable-192.png","/app/icons/icon-maskable-512.png","/app/manifest.json","/app/metadata.json"];
+const FILES = ["/app/","/app/_expo/static/js/web/__common-9d9ba813b974dc6efe5d1f0587c7486b.js","/app/_expo/static/js/web/__expo-metro-runtime-e61693ae33497368646febbbae1b21fe.js","/app/_expo/static/js/web/entry-0ca0b252c4f95ad0255f40e49e14be0c.js","/app/apple-touch-icon.png","/app/assets/node_modules/@expo-google-fonts/inter/400Regular/Inter_400Regular.51b6ad87261f18b6433ec52871ddfabc.ttf","/app/assets/node_modules/@expo-google-fonts/inter/500Medium/Inter_500Medium.137ab18bace28dd0bd83eb3b8ed2bc54.ttf","/app/assets/node_modules/@expo-google-fonts/inter/600SemiBold/Inter_600SemiBold.a5f35888d2da465de352e0dcfaf33324.ttf","/app/assets/node_modules/@expo-google-fonts/inter/700Bold/Inter_700Bold.6e237de4f1f413afa2fcc45c77ac343a.ttf","/app/assets/node_modules/@expo/vector-icons/build/vendor/react-native-vector-icons/Fonts/Ionicons.b4eb097d35f44ed943676fd56f6bdc51.ttf","/app/assets/node_modules/@expo/vector-icons/build/vendor/react-native-vector-icons/Fonts/MaterialCommunityIcons.6e435534bd35da5fef04168860a9b8fa.ttf","/app/favicon.ico","/app/icons/icon-192.png","/app/icons/icon-512.png","/app/icons/icon-maskable-192.png","/app/icons/icon-maskable-512.png","/app/manifest.json","/app/metadata.json"];
 const LEAVE = [];
 
 self.addEventListener('install', (event) => {
@@ -83,4 +83,37 @@ self.addEventListener('fetch', (event) => {
       }),
     );
   }
+});
+
+// Push notifications (supabase/functions/push-send): shown even with the app closed; a tap opens
+// the screen they are about, in the open app if there is one.
+self.addEventListener('push', (event) => {
+  let data = {};
+  try {
+    data = event.data ? event.data.json() : {};
+  } catch (e) {
+    data = { body: event.data ? event.data.text() : '' };
+  }
+  event.waitUntil(
+    self.registration.showNotification(data.title || 'ORAL', {
+      body: data.body || '',
+      icon: '/app/icons/icon-192.png',
+      tag: data.id || data.tag || 'oral',
+      lang: 'fr',
+      data: { link: data.link || '/' },
+    }),
+  );
+});
+
+self.addEventListener('notificationclick', (event) => {
+  event.notification.close();
+  const link = (event.notification.data && event.notification.data.link) || '/';
+  const url = new URL('/app' + (link.startsWith('/') ? link : '/' + link), self.location.origin).href;
+  event.waitUntil(
+    self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then((windows) => {
+      const open = windows.find((w) => w.url.startsWith(self.location.origin + '/app/') && !LEAVE.some((path) => new URL(w.url).pathname.startsWith(path)));
+      if (open) return open.focus().then((w) => (w && 'navigate' in w ? w.navigate(url) : w));
+      return self.clients.openWindow(url);
+    }),
+  );
 });
